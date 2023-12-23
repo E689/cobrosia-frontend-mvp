@@ -29,9 +29,10 @@ export const options: NextAuthOptions = {
                     name: "Zac Efron",
                     password: "uim4life"   
                 }
+                return user
                 
                 // Return null if user data could not be retrieved
-                return null
+                //return null
             }
         })
     ],
