@@ -12,7 +12,7 @@ export default function LogIn() {
         const result = await signIn("credentials", {
             username: userName,
             password: pass,
-            redirect: true,
+            redirect: false,
             callbackUrl: "/dashboard"
         })
     }
@@ -54,6 +54,9 @@ export default function LogIn() {
                             type="password"
                             onChange={(e) => {
                                 pass.current = (e.target as HTMLInputElement).value
+                            }}
+                            onKeyDown={(e) => {
+                                if (e.key == "Enter") { onSubmit() }
                             }}
                         />
                     </div>

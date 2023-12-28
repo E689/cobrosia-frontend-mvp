@@ -180,10 +180,10 @@ const Footer = () => {
             </div>
 
             {/**<!--Copyright section-->*/}
-            <div className="bg-neutral-200 p-6 text-center text-neutral-900">
+            <div className="bg-black p-6 text-center text-switch-purple">
                 <span>© 2023 Copyright: </span>
                 <a
-                    className="font-semibold text-neutral-600 "
+                    className="font-semibold text-switch-purple"
                     href="https://tailwind-elements.com/"
                 >
                     Tailwind Elements

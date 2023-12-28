@@ -10,32 +10,39 @@ export const options: NextAuthOptions = {
                 password: { label: "Contraseña", type: "password", placeholder: "********" },
             },
             async authorize(credentials, req) {
-                /** 
-                const res = await fetch("/your/endpoint", {
+                /**
+                const res = await fetch("http://18.225.35.234/api/users/login", {
                     method: 'POST',
                     body: JSON.stringify(credentials),
                     headers: { "Content-Type": "application/json" }
                 })
                 const user = await res.json()
-            
+                
                 // If no error and we have user data, return it
                 if (res.ok && user) {
                 return user
-                }
-                */
+                }*/
                 // Bypass for auth for dev:
                 const user = {
-                    id: "1",
-                    name: "Zac Efron",
-                    password: "uim4life"   
+                    id: "658de49309be41f5d6b6c30a",
+                    name: "perry@perry.com",
+                    password: "password"   
                 }
                 return user
-                
                 // Return null if user data could not be retrieved
-                //return null
+                return null
             }
         })
     ],
+    callbacks: {
+        session: ({ session, token }) => ({
+            ...session,
+            user: {
+                ...session.user,
+                id: token.sub,
+            },
+        }),
+    },
     pages: {
         signIn: '/login'
     }

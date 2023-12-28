@@ -4,11 +4,11 @@ import ContactForm from "@/components/ContactForm"
 
 export default function Home() {
   return (
-    <main className="mt-24 bg-lightbg relative">
+    <main className="mt-24 bg-black relative">
       <div className="w-full" id="home">
-        <div className="bg-home-bg bg-cover w-full h-[85vh] absolute t-0 l-0 z-10" />
-        <div className="bg-white/10 bg-cover w-full h-[85vh] absolute t-0 l-0 z-10" />
-        <div className="container m-auto z-10 w-full h-[85vh] relative flex">
+        <div className="bg-home-bg bg-cover w-full h-[90vh] absolute t-0 l-0 z-10" />
+        <div className="bg-black/80 bg-cover w-full h-[90vh] absolute t-0 l-0 z-10" />
+        <div className="container m-auto z-10 w-full h-[90vh] relative flex">
           <Image
             src="/logo-removebg.png"
             width="500"
