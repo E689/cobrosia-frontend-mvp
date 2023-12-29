@@ -24,8 +24,8 @@ export default function SideBar({ children }) {
     }, [session])
 
     return (
-        <div className={`h-screen float-left ${expanded ? "w-[20vw]" : "w-[5vw]"}`}>
-            <nav className="h-full flex flex-col bg-darkbg border-r shadow-md">
+        <div className={`h-screen float-left ${expanded ? "w-[20vw]" : "w-[5vw]"} transition-all duration-150 ease-in-out`}>
+            <nav className="h-full flex flex-col bg-darkbg border-r shadow-md rounded-r-md">
                 <div className="p-4 pb-2 flex justify-between items-center">
                     <Image
                         src="/logo-removebg.png"
