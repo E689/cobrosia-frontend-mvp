@@ -61,7 +61,7 @@ export default function Messages() {
                         bills ? (
                             bills.map((bill) => {
                                 return (
-                                    <div className="flex flex-row w-full h-10 gap-2 text-brand-color">
+                                    <div className="flex flex-row w-full h-10 gap-2 text-brand-color" key={bill._id}>
                                         <span>Monto: {bill.amount}</span>
                                         <span>Fecha Cobro: {bill.dueDate}</span>
                                         <span>Estado: {bill.status}</span>

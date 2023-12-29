@@ -20,8 +20,8 @@ export default function ClientForm({ userId, setClientAdded }) {
             "clientName": clientName,
             "contactName": clientContactName,
             "contactlastName": clientContactLastName,
-            "phone": clientContactPhone,
-            "email": clientContactEmail,
+            "phone": clientContactPhone ? clientContactPhone : "00000000",
+            "email": clientContactEmail ? clientContactEmail : " - ",
             "userId": userId
         }
         const response = await fetch(
@@ -64,7 +64,7 @@ export default function ClientForm({ userId, setClientAdded }) {
         <div className="flex flex-row-reverse w-full gap-4">
             <div className="bg-darkbg rounded-md h-[5vh] p-1 flex">
                 <button
-                    className="w-[10vw] text-brand-color disabled:text-slate-50"
+                    className="w-[10vw] text-lightbg disabled:text-slate-400"
                     onClick={addClient}
                     disabled={missingField ? true : false}
                 >
@@ -73,7 +73,7 @@ export default function ClientForm({ userId, setClientAdded }) {
             </div>
             <div className="bg-darkbg rounded-md h-full grow p-1 m-auto flex flex-wrap">
                 <div className="w-full sm:w-1/2 md:w-1/3 mb-4 px-2">
-                    <label className="text-brand-color font-bold">
+                    <label className="text-lightbg font-bold">
                         Nombre del Cliente
                         <input
                             value={clientName}
@@ -85,7 +85,7 @@ export default function ClientForm({ userId, setClientAdded }) {
                     </label>
                 </div>
                 <div className="w-full sm:w-1/2 md:w-1/3 mb-4 px-2">
-                    <label className="text-brand-color font-bold">
+                    <label className="text-lightbg font-bold">
                         Nombre del contacto
                         <input
                             value={clientContactName}
@@ -97,7 +97,7 @@ export default function ClientForm({ userId, setClientAdded }) {
                     </label>
                 </div>
                 <div className="w-full sm:w-1/2 md:w-1/3 mb-4 px-2">
-                    <label className="text-brand-color font-bold">
+                    <label className="text-lightbg font-bold">
                         Apellido del contacto
                         <input
                             value={clientContactLastName}
@@ -109,25 +109,31 @@ export default function ClientForm({ userId, setClientAdded }) {
                     </label>
                 </div>
                 <div className="w-full sm:w-1/2 md:w-1/3 mb-4 px-2">
-                    <label className="text-brand-color font-bold">
+                    <label className="text-lightbg font-bold">
                         Telefono del contacto*
                         <input
                             value={clientContactPhone}
                             autoComplete="off"
                             className="w-full rounded-md py-1 px-5 text-darkbg"
-                            placeholder="4028 4946"
-                            onChange={(e) => { setClientContactPhone((e.target as HTMLInputElement).value) }}
+                            placeholder="40284946"
+                            type="number"
+                            max={99999999}
+                            min={10000000}
+                            step={1}
+                            onChange={(e) => { clientContactPhone.length > 7 ? setClientContactPhone(clientContactPhone) : setClientContactPhone((e.target as HTMLInputElement).value) }}
                         />
                     </label>
                 </div>
                 <div className="w-full sm:w-1/2 md:w-1/3 mb-4 px-2">
-                    <label className="text-brand-color font-bold">
+                    <label className="text-lightbg font-bold">
                         Correo del contacto*
                         <input
                             value={clientContactEmail}
                             autoComplete="off"
                             className="w-full rounded-md py-1 px-5 text-darkbg"
                             placeholder="jose.perez@correo.com"
+                            type="email"
+                            pattern="[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$"
                             onChange={(e) => { setClientContactEmail((e.target as HTMLInputElement).value) }}
                         />
                     </label>

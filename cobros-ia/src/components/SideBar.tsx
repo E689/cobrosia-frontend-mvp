@@ -37,7 +37,7 @@ export default function SideBar({ children }) {
                     />
                     <button
                         onClick={() => setExpanded((curr) => !curr)}
-                        className="p-1.5 rounded-lg bg-lightbg hover:bg-gray-100 w-[5vw] text-brand-color">
+                        className="p-1.5 rounded-lg bg-lightbg hover:bg-gray-100 w-[5vw] text-darkbg">
                         {expanded ? <RiMenuUnfoldLine className="w-[5vw] m-auto" /> : <RiMenuFoldLine className="m-auto" />}
                     </button>
                 </div>
@@ -58,11 +58,11 @@ export default function SideBar({ children }) {
                         className={`flex justify-between items-center overflow-hidden transition-all w-full ${expanded ? "w-52 ml-3" : "invisible"}`}
                     >
                         <div className="leading-4">
-                            <h4 className={`font-semibold text-brand-color`}>{user}</h4>
+                            <h4 className={`font-semibold text-lightbg`}>{user}</h4>
                         </div>
 
                         <CiLogout
-                            className="w-10 h-10 text-brand-color hover:cursor-pointer"
+                            className="w-10 h-10 text-lightbg hover:cursor-pointer"
                             onClick={() => signOut()}
                         />
                     </div>
@@ -80,11 +80,11 @@ export function SidebarItem({ icon, text, path, active, alert }) {
             <li
                 className={`
           relative flex items-center py-2 px-3 my-1
-          font-medium rounded-md cursor-pointer
+          font-bold rounded-md cursor-pointer
           transition-colors group
           ${active
-                        ? "bg-gradient-to-tr from-lightbg to-brand-color text-switch-purple"
-                        : "hover:bg-lightbg text-brand-color hover:text-switch-purple"
+                        ? "bg-lightbg text-darkbg"
+                        : "hover:bg-lightbg text-lightbg hover:text-darkbg"
                     }`}
             >
                 {icon}
@@ -105,8 +105,8 @@ export function SidebarItem({ icon, text, path, active, alert }) {
                     <div
                         className={`
             absolute left-full rounded-md px-2 py-1 ml-6
-            bg-darkbg text-brand-color text-sm
-            invisible opacity-20 -translate-x-3 transition-all
+            bg-darkbg text-lightbg text-sm
+            invisible opacity-20 -translate-x-1 transition-all
             group-hover:visible group-hover:opacity-100 group-hover:translate-x-0
         `}
                     >

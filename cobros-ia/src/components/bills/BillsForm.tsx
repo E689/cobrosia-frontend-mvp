@@ -23,7 +23,14 @@ export default function BillsForm({ userId, setBillAdded }) {
             "amount": billAmount,
             "dueDate": billDueDate,
             "status": billStatus,
-            "clientId": billClientID
+            "clientId": billClientID,
+            "billId": billId,
+            "context": {
+                "reminder": "5",
+                "editDueDate": false,
+                "priority": "1",
+                "other": "Tratar al cliente con respeto."
+            },
         }
         const response = await fetch(
             'http://18.225.35.234/api/bills',

@@ -35,9 +35,9 @@ export default function DashboardLayout({ children }) {
                 />
                 <SidebarItem
                     icon={<CiMail size={20} />}
-                    text={"Comunicación"}
-                    path={"/dashboard/messages"}
-                    active={selectedTab.includes("messages") ? true : false}
+                    text={"Facturas"}
+                    path={"/dashboard/bills"}
+                    active={selectedTab.includes("bills") ? true : false}
                     alert={false}
                 />
             </SideBar>
