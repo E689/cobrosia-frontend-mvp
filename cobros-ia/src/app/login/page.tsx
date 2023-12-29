@@ -10,9 +10,9 @@ export default function LogIn() {
 
     const onSubmit = async () => {
         const result = await signIn("credentials", {
-            username: userName,
-            password: pass,
-            redirect: false,
+            email: userName.current,
+            password: pass.current,
+            redirect: true,
             callbackUrl: "/dashboard"
         })
     }
@@ -33,7 +33,8 @@ export default function LogIn() {
                 <div className="row-start-3 row-span-1">
                     <div className="flex h-full">
                         <input
-                            id="username"
+                            id="email"
+                            name="email"
                             autoComplete="on"
                             className="px-5 py-1 m-auto h-full rounded-md border-0 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-brand-color"
                             placeholder="Nombre de usuario"
@@ -48,6 +49,7 @@ export default function LogIn() {
                     <div className="flex h-full">
                         <input
                             id="password"
+                            name="password"
                             autoComplete="off"
                             className="px-5 py-1 m-auto h-full rounded-md border-0 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-brand-color"
                             placeholder="Contraseña"

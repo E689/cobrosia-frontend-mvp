@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useContext, createContext, useState } from "react";
+import React, { useContext, createContext, useState, useEffect } from "react";
 import Image from "next/image";
 import { signOut, getSession } from "next-auth/react";
 import { RiMenuUnfoldLine } from "react-icons/ri";
@@ -17,9 +17,11 @@ export default function SideBar({ children }) {
     const session = getSession();
     const [user, setUser] = useState("")
 
-    session.then((res) => {
-        if (res) setUser(res.user.name)
-    })
+    useEffect(() => {
+        session.then((res) => {
+            if (res) setUser(res.user.name)
+        })
+    }, [session])
 
     return (
         <div className={`h-screen float-left ${expanded ? "w-[20vw]" : "w-[5vw]"}`}>
@@ -30,6 +32,7 @@ export default function SideBar({ children }) {
                         width="500"
                         height="500"
                         alt="logo png"
+                        priority
                         className={`overflow-hidden transition-all ${expanded ? "w-32" : "w-0"}`}
                     />
                     <button
@@ -45,7 +48,7 @@ export default function SideBar({ children }) {
 
                 <div className="border-t flex p-3">
                     <Image
-                        src="https://ui-avatars.com/api/?background=00DAC6&color=A12697&bold=true"
+                        src={`https://ui-avatars.com/api/?background=00DAC6&color=A12697&bold=true&name=${user}`}
                         width={500}
                         height={500}
                         alt="User profile picture"
