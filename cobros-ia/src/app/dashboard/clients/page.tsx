@@ -69,7 +69,6 @@ export default function Clients() {
                                     oContactLastName={client.contactlastName}
                                     oContactPhone={client.phone}
                                     oContactEmail={client.email}
-                                    clientId={client._id}
                                     key={client._id}
                                 />
                             )

@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { IoIosAdd } from "react-icons/io";
 
-export default function ClientCard({ oClientName, oContactName, oContactLastName, oContactPhone, oContactEmail, clientId }) {
+export default function ClientCard({ oClientName, oContactName, oContactLastName, oContactPhone, oContactEmail }) {
     // Vars
     const [isHidden, setIsHidden] = useState(true)
     const [isEditable, setIsEditable] = useState(false)
