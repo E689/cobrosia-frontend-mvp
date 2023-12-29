@@ -18,7 +18,7 @@ export default function ClientCard({ oClientName, oContactName, oContactLastName
     return (
         <div className="overflow-hidden">
             <button
-                className="flex justify-between w-full bg-darkbg rounded-md text-lightbg shadow-md p-2 font-bold"
+                className="flex justify-between w-full bg-classy-blue hover:bg-classy-light-blue rounded-md text-lightbg shadow-md p-2 font-bold"
                 onClick={() => setIsHidden(!isHidden)}
             >
                 <span>{clientName}</span>
@@ -31,6 +31,7 @@ export default function ClientCard({ oClientName, oContactName, oContactLastName
                         <label className="text-black font-bold">
                             Nombre del Cliente
                             <input
+                                name={`clientName_${clientId}`}
                                 value={clientName}
                                 disabled={!isEditable}
                                 autoComplete="off"
@@ -44,6 +45,7 @@ export default function ClientCard({ oClientName, oContactName, oContactLastName
                         <label className="text-black font-bold">
                             Nombre del contacto
                             <input
+                                name={`clientContactName_${clientId}`}
                                 value={clientContactName}
                                 disabled={!isEditable}
                                 autoComplete="off"
@@ -57,6 +59,7 @@ export default function ClientCard({ oClientName, oContactName, oContactLastName
                         <label className="text-black font-bold">
                             Apellido del contacto
                             <input
+                                name={`clientContactLastName_${clientId}`}
                                 value={clientContactLastName}
                                 disabled={!isEditable}
                                 autoComplete="off"
@@ -70,6 +73,7 @@ export default function ClientCard({ oClientName, oContactName, oContactLastName
                         <label className="text-black font-bold">
                             Telefono del contacto
                             <input
+                                name={`clientContactPhone_${clientId}`}
                                 value={clientContactPhone}
                                 disabled={!isEditable}
                                 autoComplete="off"
@@ -83,6 +87,7 @@ export default function ClientCard({ oClientName, oContactName, oContactLastName
                         <label className="text-black font-bold">
                             Correo del contacto
                             <input
+                                name={`clientContactEmail_${clientId}`}
                                 value={clientContactEmail}
                                 disabled={!isEditable}
                                 autoComplete="off"
@@ -94,13 +99,13 @@ export default function ClientCard({ oClientName, oContactName, oContactLastName
                     </div>
                     <div className="w-full sm:w-1/2 md:w-1/3 mb-4 px-2 flex">
                         <button 
-                            className="m-auto bg-darkbg text-lightbg font-bold p-2 rounded-md"
+                            className="m-auto bg-classy-blue hover:bg-classy-light-blue text-lightbg font-bold p-2 rounded-md"
                             onClick={() => setIsEditable(!isEditable)}
                         >
                             { isEditable ? 'Guardar' : 'Editar' }
                         </button>
                         <button 
-                            className="m-auto bg-darkbg text-lightbg font-bold p-2 rounded-md"
+                            className="m-auto bg-classy-blue hover:bg-classy-light-blue text-lightbg font-bold p-2 rounded-md"
                             onClick={() => setIsEditable(!isEditable)}
                         >
                             Eliminar

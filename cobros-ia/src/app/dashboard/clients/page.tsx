@@ -46,7 +46,7 @@ export default function Clients() {
                         id="searchBar"
                         value={searchClient}
                         autoComplete="on"
-                        className="w-full rounded-md py-1 px-5 text-switch-purple"
+                        className="w-full rounded-md py-1 px-5 text-darkbg font-bold"
                         placeholder="Nombre de cliente"
                         onChange={(e) => { setSearchClient((e.target as HTMLInputElement).value) }}
                     />
@@ -69,13 +69,14 @@ export default function Clients() {
                                     oContactLastName={client.contactlastName}
                                     oContactPhone={client.phone}
                                     oContactEmail={client.email}
+                                    clientId={client._id}
                                     key={client._id}
                                 />
                             )
                         })
                     ) : (
-                        <div className="bg-darkbg rounded-md grow p-4 flex flex-col gap-2">
-                            <div className="flex m-auto text-brand-color font-bold">
+                        <div className="bg-classy-blue rounded-md grow p-4 flex flex-col gap-2">
+                            <div className="flex m-auto text-lightbg font-bold">
                                 <h1>No hay clientes para mostrar...</h1>
                             </div>
                         </div>

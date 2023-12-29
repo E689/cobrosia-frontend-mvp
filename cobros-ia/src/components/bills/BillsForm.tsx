@@ -3,10 +3,8 @@
 import React, { useEffect, useState } from "react";
 import { IoIosAdd } from "react-icons/io";
 
-export default function BillsForm({ userId, setBillAdded }) {
+export default function BillsForm({ clients, setBillAdded }) {
     // Vars
-    const [clients, setClients] = useState(null)
-
     // Add Bill variables
     const [billAmount, setBillAmount] = useState("")
     const [billDueDate, setBillDueDate] = useState("")
@@ -47,18 +45,6 @@ export default function BillsForm({ userId, setBillAdded }) {
         })
     }
 
-    const loadClients = async () => {
-        const response = await fetch(
-            `http://18.225.35.234/api/clients/${userId}`,
-            {
-                cache: "no-cache"
-            }
-        ).then((res) => res.json())
-            .then((data) => {
-                setClients(data.clients)
-            })
-    }
-
     const reloadBillsList = () => {
         // Clean added values
         setBillAmount("")
@@ -72,10 +58,6 @@ export default function BillsForm({ userId, setBillAdded }) {
     }
 
     useEffect(() => {
-        if (userId) loadClients()
-    }, [userId])
-
-    useEffect(() => {
         if (billAmount !== "" && billDueDate !== "" && billStatus !== "" &&
             billClientID !== "" && billId !== "") {
             setMissingField(false)
@@ -86,20 +68,21 @@ export default function BillsForm({ userId, setBillAdded }) {
 
     return (
         <div className="flex flex-row-reverse w-full gap-4">
-            <div className="bg-darkbg rounded-md h-[5vh] p-1 flex">
+            <div className="bg-classy-blue hover:bg-classy-light-blue rounded-md h-[5vh] p-1 flex">
                 <button
-                    className="w-[10vw] text-brand-color disabled:text-slate-50"
+                    className="w-[10vw] text-lightbg disabled:text-slate-400 disabled:cursor-not-allowed"
                     onClick={addBill}
                     disabled={missingField ? true : false}
                 >
                     <IoIosAdd className="w-10 h-10 inline" /> Agregar
                 </button>
             </div>
-            <div className="bg-darkbg rounded-md h-full grow p-1 m-auto flex flex-wrap">
+            <div className="bg-classy-blue rounded-md h-full grow p-1 m-auto flex flex-wrap">
                 <div className="w-full sm:w-1/2 md:w-1/3 mb-4 px-2">
-                    <label className="text-brand-color font-bold">
+                    <label className="text-lightbg font-bold">
                         No. Factura
                         <input
+                            name={`billId`}
                             value={billId}
                             autoComplete="off"
                             className="w-full rounded-md py-1 px-5 text-darkbg"
@@ -109,9 +92,10 @@ export default function BillsForm({ userId, setBillAdded }) {
                     </label>
                 </div>
                 <div className="w-full sm:w-1/2 md:w-1/3 mb-4 px-2">
-                    <label className="text-brand-color font-bold">
+                    <label className="text-lightbg font-bold">
                         Nombre del cliente
                         <select
+                            name={`billClientID`}
                             value={billClientID} 
                             onChange={(e) => { setBillClientID((e.target as HTMLSelectElement).value) }}
                             className="w-full rounded-md py-1 px-5 text-darkbg"
@@ -131,9 +115,10 @@ export default function BillsForm({ userId, setBillAdded }) {
                     </label>
                 </div>
                 <div className="w-full sm:w-1/2 md:w-1/3 mb-4 px-2">
-                    <label className="text-brand-color font-bold">
+                    <label className="text-lightbg font-bold">
                         Fecha de Cobro
                         <input
+                            name={`billDueDate`}
                             value={billDueDate}
                             autoComplete="off"
                             type="date"
@@ -143,9 +128,10 @@ export default function BillsForm({ userId, setBillAdded }) {
                     </label>
                 </div>
                 <div className="w-full sm:w-1/2 md:w-1/3 mb-4 px-2">
-                    <label className="text-brand-color font-bold">
+                    <label className="text-lightbg font-bold">
                         Estado
                         <select 
+                            name={`billStatus`}
                             value={billStatus}
                             onChange={(e) => { setBillStatus((e.target as HTMLSelectElement).value) }}
                             className="w-full rounded-md py-1 px-5 text-darkbg"
@@ -157,9 +143,10 @@ export default function BillsForm({ userId, setBillAdded }) {
                     </label>
                 </div>
                 <div className="w-full sm:w-1/2 md:w-1/3 mb-4 px-2">
-                    <label className="text-brand-color font-bold">
+                    <label className="text-lightbg font-bold">
                         Monto (Q)
                         <input
+                            name={`billAmount`}
                             value={billAmount}
                             autoComplete="off"
                             className="w-full rounded-md py-1 px-5 text-darkbg"

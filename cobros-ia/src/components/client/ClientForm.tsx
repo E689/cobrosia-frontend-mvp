@@ -62,20 +62,21 @@ export default function ClientForm({ userId, setClientAdded }) {
 
     return (
         <div className="flex flex-row-reverse w-full gap-4">
-            <div className="bg-darkbg rounded-md h-[5vh] p-1 flex">
+            <div className="bg-classy-blue hover:bg-classy-light-blue rounded-md h-[5vh] p-1 flex">
                 <button
-                    className="w-[10vw] text-lightbg disabled:text-slate-400"
+                    className="w-[10vw] text-lightbg disabled:text-slate-400 disabled:cursor-not-allowed"
                     onClick={addClient}
                     disabled={missingField ? true : false}
                 >
                     <IoIosAdd className="w-10 h-10 inline" /> Agregar
                 </button>
             </div>
-            <div className="bg-darkbg rounded-md h-full grow p-1 m-auto flex flex-wrap">
+            <div className="bg-classy-blue rounded-md h-full grow p-1 m-auto flex flex-wrap">
                 <div className="w-full sm:w-1/2 md:w-1/3 mb-4 px-2">
                     <label className="text-lightbg font-bold">
                         Nombre del Cliente
                         <input
+                            name={`clientName`}
                             value={clientName}
                             autoComplete="off"
                             className="w-full rounded-md py-1 px-5 text-darkbg"
@@ -88,6 +89,7 @@ export default function ClientForm({ userId, setClientAdded }) {
                     <label className="text-lightbg font-bold">
                         Nombre del contacto
                         <input
+                            name={`clientContactName`}
                             value={clientContactName}
                             autoComplete="off"
                             className="w-full rounded-md py-1 px-5 text-darkbg"
@@ -100,6 +102,7 @@ export default function ClientForm({ userId, setClientAdded }) {
                     <label className="text-lightbg font-bold">
                         Apellido del contacto
                         <input
+                            name={`clientContactLastName`}
                             value={clientContactLastName}
                             autoComplete="off"
                             className="w-full rounded-md py-1 px-5 text-darkbg"
@@ -112,6 +115,7 @@ export default function ClientForm({ userId, setClientAdded }) {
                     <label className="text-lightbg font-bold">
                         Telefono del contacto*
                         <input
+                            name={`clientContactPhone`}
                             value={clientContactPhone}
                             autoComplete="off"
                             className="w-full rounded-md py-1 px-5 text-darkbg"
@@ -120,7 +124,7 @@ export default function ClientForm({ userId, setClientAdded }) {
                             max={99999999}
                             min={10000000}
                             step={1}
-                            onChange={(e) => { clientContactPhone.length > 7 ? setClientContactPhone(clientContactPhone) : setClientContactPhone((e.target as HTMLInputElement).value) }}
+                            onChange={(e) => { setClientContactPhone((e.target as HTMLInputElement).value) }}
                         />
                     </label>
                 </div>
@@ -128,6 +132,7 @@ export default function ClientForm({ userId, setClientAdded }) {
                     <label className="text-lightbg font-bold">
                         Correo del contacto*
                         <input
+                            name={`clientContactEmail`}
                             value={clientContactEmail}
                             autoComplete="off"
                             className="w-full rounded-md py-1 px-5 text-darkbg"
