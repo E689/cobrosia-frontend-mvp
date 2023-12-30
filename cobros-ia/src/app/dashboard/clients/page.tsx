@@ -18,7 +18,7 @@ export default function Clients() {
     // Functions
     const loadClients = async () => {
         const response = await fetch(
-            `http://18.225.35.234/api/clients/${userId}`,
+            process.env.NEXT_PUBLIC_API_URL + `/clients/${userId}`,
             {
                 cache: "no-cache"
             }
@@ -36,7 +36,7 @@ export default function Clients() {
     useEffect(() => {
         if (clientAdded) setClientAdded(false)
         if (userId) loadClients()
-    }, [userId, clientAdded])
+    }, [userId, clientAdded, loadClients])
 
     return (
         <div className="h-fit flex flex-col gap-4 py-20 px-20">

@@ -13,7 +13,7 @@ export default function DashboardLayout({ children }) {
 
     useEffect(() => {
         setSelectedTab(pathname[pathname.length-1])
-    })
+    }, [pathname])
 
     return (
         <>

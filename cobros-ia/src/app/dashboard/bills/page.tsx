@@ -19,7 +19,7 @@ export default function Messages() {
 
     const loadBills = async () => {
         const response = await fetch(
-            `http://18.225.35.234/api/bills/${userId}`,
+            process.env.NEXT_PUBLIC_API_URL + `/bills/${userId}`,
             {
                 cache: "no-cache"
             }
@@ -31,7 +31,7 @@ export default function Messages() {
 
     const loadClients = async () => {
         const response = await fetch(
-            `http://18.225.35.234/api/clients/${userId}`,
+            process.env.NEXT_PUBLIC_API_URL + `/clients/${userId}`,
             {
                 cache: "no-cache"
             }
@@ -49,7 +49,7 @@ export default function Messages() {
     useEffect(() => {
         if (billAdded) setBillAdded(false)
         if (userId) { loadBills(); loadClients() }
-    }, [userId, billAdded])
+    }, [userId, billAdded, loadBills, loadClients])
 
     return (
         <div className="h-fit flex flex-col gap-4 py-20 px-20">

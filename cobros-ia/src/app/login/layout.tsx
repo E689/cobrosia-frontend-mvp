@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { FaArrowLeft } from "react-icons/fa";
 
-export default function userAuthLayout({ children }) {
+export default function UserAuthLayout({ children }) {
     const { data: session } = useSession();
 
     return (

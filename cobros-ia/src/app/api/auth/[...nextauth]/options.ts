@@ -10,7 +10,7 @@ export const options: NextAuthOptions = {
                 password: { label: "Contraseña", type: "password", placeholder: "********" },
             },
             async authorize(credentials, req) {
-                const res = await fetch("http://18.225.35.234/api/users/login", {
+                const res = await fetch(process.env.NEXT_PUBLIC_API_URL + "/users/login", {
                     method: 'POST',
                     body: JSON.stringify(credentials),
                     headers: { "Content-Type": "application/json" }

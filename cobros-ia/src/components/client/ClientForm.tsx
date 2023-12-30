@@ -25,7 +25,7 @@ export default function ClientForm({ userId, setClientAdded }) {
             "userId": userId
         }
         const response = await fetch(
-            'http://18.225.35.234/api/clients',
+            process.env.NEXT_PUBLIC_API_URL + '/clients',
             {
                 method: "POST",
                 cache: "no-cache",

@@ -17,7 +17,7 @@ export const metadata = {
 export default function RootLayout({ children }: IProps) {
   return (
     <html lang="es" className='scroll-smooth'>
-      <body className={inter.className}>
+      <body className={inter.className} suppressHydrationWarning={true}>
         <Providers>
           {children}
         </Providers>

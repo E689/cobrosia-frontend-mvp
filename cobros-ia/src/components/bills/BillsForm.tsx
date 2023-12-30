@@ -31,7 +31,7 @@ export default function BillsForm({ clients, setBillAdded }) {
             },
         }
         const response = await fetch(
-            'http://18.225.35.234/api/bills',
+            process.env.NEXT_PUBLIC_API_URL + '/bills',
             {
                 method: "POST",
                 cache: "no-cache",
