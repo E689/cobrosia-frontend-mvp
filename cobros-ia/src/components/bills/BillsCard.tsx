@@ -51,7 +51,12 @@ export default function BillsCard({ originalData, clients, setBillModified, setL
             "status": billStatus,
             "clientId": billClientID,
             "billId": billId,
-            "context": billContext,
+            "context": {
+                "reminder": reminder,
+                "editDueDate": editDueDate,
+                "priority": priority,
+                "other": other
+            },
         }
         fetch(
             process.env.NEXT_PUBLIC_API_URL + `/bills/${id}`,
@@ -81,7 +86,6 @@ export default function BillsCard({ originalData, clients, setBillModified, setL
             setOther(billContext.other)
         }
     }, [billContext])
-
 
     return (
         <div className="overflow-hidden">
@@ -130,7 +134,7 @@ export default function BillsCard({ originalData, clients, setBillModified, setL
                                                 )
                                             })
                                         ) : (
-                                            <option value="na">Sin Cliente</option>
+                                            <option value="">Cargando clientes...</option>
                                         )
                                     }
                                 </select>

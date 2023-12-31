@@ -9,7 +9,7 @@ export default function BillsForm({ clients, setBillModified }) {
     // Add Bill variables
     const [billAmount, setBillAmount] = useState("")
     const [billDueDate, setBillDueDate] = useState("")
-    const [billStatus, setBillStatus] = useState("pending")
+    const [billStatus, setBillStatus] = useState("")
     const [billClientID, setBillClientID] = useState("")
     const [billId, setBillId] = useState("")
 
@@ -77,7 +77,7 @@ export default function BillsForm({ clients, setBillModified }) {
             <div className="bg-classy-blue hover:bg-classy-light-blue rounded-md h-[5vh] p-1 flex">
                 <button
                     className="w-[10vw] text-lightbg disabled:text-slate-400 disabled:cursor-not-allowed"
-                    onClick={addBill}
+                    onClick={() => addBill()}
                     disabled={missingField ? true : false}
                 >
                     <IoIosAdd className="w-10 h-10 inline" /> Agregar
@@ -102,10 +102,11 @@ export default function BillsForm({ clients, setBillModified }) {
                         Nombre del cliente
                         <select
                             name={`billClientID`}
-                            value={billClientID} 
+                            value={billClientID}
                             onChange={(e) => { setBillClientID((e.target as HTMLSelectElement).value) }}
                             className="w-full rounded-md py-1 px-5 text-darkbg"
                         >
+                            <option value="">Sin Cliente</option>
                             {
                                 clients ? (
                                     clients.map((cliente, index) => {
@@ -136,12 +137,13 @@ export default function BillsForm({ clients, setBillModified }) {
                 <div className="w-full sm:w-1/2 md:w-1/3 mb-4 px-2">
                     <label className="text-lightbg font-bold">
                         Estado
-                        <select 
+                        <select
                             name={`billStatus`}
                             value={billStatus}
                             onChange={(e) => { setBillStatus((e.target as HTMLSelectElement).value) }}
                             className="w-full rounded-md py-1 px-5 text-darkbg"
                         >
+                            <option value="">Sin estado</option>
                             <option value="pending">Pendiente</option>
                             <option value="inProgress">En cobranza</option>
                             <option value="collected">Cobrada</option>
