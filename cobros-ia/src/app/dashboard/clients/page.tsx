@@ -1,7 +1,7 @@
 'use client'
 
 import { getSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import ClientForm from "@/components/client/ClientForm";
 import ClientCard from "@/components/client/ClientCard";
 
@@ -16,8 +16,8 @@ export default function Clients() {
     const [userId, setUserId] = useState(null)
 
     // Functions
-    const loadClients = async () => {
-        const response = await fetch(
+    const loadClients = useCallback(() => {
+        fetch(
             process.env.NEXT_PUBLIC_API_URL + `/clients/${userId}`,
             {
                 cache: "no-cache"
@@ -26,7 +26,7 @@ export default function Clients() {
             .then((data) => {
                 setClients(data.clients)
             })
-    }
+    }, [userId])
 
     // Procedures
     session.then((res) => {

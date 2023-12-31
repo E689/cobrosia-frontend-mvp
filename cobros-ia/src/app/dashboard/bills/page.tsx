@@ -3,7 +3,7 @@
 import BillsCard from "@/components/bills/BillsCard";
 import BillsForm from "@/components/bills/BillsForm";
 import { getSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 
 export default function Messages() {
     // Vars
@@ -17,8 +17,8 @@ export default function Messages() {
     const session = getSession()
     const [userId, setUserId] = useState(null)
 
-    const loadBills = async () => {
-        const response = await fetch(
+    const loadBills = useCallback(() => {
+        fetch(
             process.env.NEXT_PUBLIC_API_URL + `/bills/${userId}`,
             {
                 cache: "no-cache"
@@ -27,10 +27,10 @@ export default function Messages() {
             .then((data) => {
                 setBills(data.bills)
             })
-    }
+    }, [userId])
 
-    const loadClients = async () => {
-        const response = await fetch(
+    const loadClients = useCallback(() => {
+        fetch(
             process.env.NEXT_PUBLIC_API_URL + `/clients/${userId}`,
             {
                 cache: "no-cache"
@@ -39,7 +39,7 @@ export default function Messages() {
             .then((data) => {
                 setClients(data.clients)
             })
-    }
+    }, [userId])
 
     // Procedures
     session.then((res) => {
