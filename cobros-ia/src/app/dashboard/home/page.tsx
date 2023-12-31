@@ -1,4 +1,10 @@
+'use client'
+
+import { toast } from "react-toastify";
+
 export default function DashboardHome() {
+    const notify = () => toast("Wow so easy !");
+    
     return (
         <div className="h-fit flex flex-col gap-4 py-20 px-20">
             <div className="flex flex-row w-full">

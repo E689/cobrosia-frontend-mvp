@@ -3,6 +3,10 @@ import './globals.css'
 import { ReactNode } from 'react'
 import Providers from './Providers'
 
+// Tostify imports
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css';
+
 const inter = Inter({ subsets: ['latin'] })
 
 interface IProps {
@@ -21,6 +25,18 @@ export default function RootLayout({ children }: IProps) {
         <Providers>
           {children}
         </Providers>
+        <ToastContainer
+          position="top-center"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="colored"
+        />
       </body>
     </html>
   )

@@ -2,8 +2,9 @@
 
 import React, { useEffect, useState } from "react";
 import { IoIosAdd } from "react-icons/io";
+import { toast } from "react-toastify";
 
-export default function ClientForm({ userId, setClientAdded }) {
+export default function ClientForm({ userId, setClientModified }) {
     // Add Client variables
     const [clientName, setClientName] = useState("")
     const [clientContactName, setClientContactName] = useState("")
@@ -19,7 +20,7 @@ export default function ClientForm({ userId, setClientAdded }) {
         const data = {
             "clientName": clientName,
             "contactName": clientContactName,
-            "contactlastName": clientContactLastName,
+            "contactLastName": clientContactLastName,
             "phone": clientContactPhone ? clientContactPhone : "00000000",
             "email": clientContactEmail ? clientContactEmail : " - ",
             "userId": userId
@@ -36,7 +37,12 @@ export default function ClientForm({ userId, setClientAdded }) {
             }
         ).then((res) => {
             // Add a creation success alert.
-            if (res.ok) reloadClientsList()
+            if (res.ok) {
+                reloadClientsList()
+                toast.success("El cliente se creo con éxito!")
+            } else {
+                toast.error("No se pudo crear el cliente.")
+            }
         })
     }
 
@@ -48,7 +54,7 @@ export default function ClientForm({ userId, setClientAdded }) {
         setClientContactPhone("")
         setClientContactEmail("")
 
-        setClientAdded(true)
+        setClientModified(true)
     }
 
     useEffect(() => {
@@ -80,7 +86,7 @@ export default function ClientForm({ userId, setClientAdded }) {
                             value={clientName}
                             autoComplete="off"
                             className="w-full rounded-md py-1 px-5 text-darkbg"
-                            placeholder="Cemaco"
+                            placeholder="<Nombre Cliente>"
                             onChange={(e) => { setClientName((e.target as HTMLInputElement).value) }}
                         />
                     </label>
@@ -93,7 +99,7 @@ export default function ClientForm({ userId, setClientAdded }) {
                             value={clientContactName}
                             autoComplete="off"
                             className="w-full rounded-md py-1 px-5 text-darkbg"
-                            placeholder="José"
+                            placeholder="<Primer nombre>"
                             onChange={(e) => { setClientContactName((e.target as HTMLInputElement).value) }}
                         />
                     </label>
@@ -106,7 +112,7 @@ export default function ClientForm({ userId, setClientAdded }) {
                             value={clientContactLastName}
                             autoComplete="off"
                             className="w-full rounded-md py-1 px-5 text-darkbg"
-                            placeholder="Perez"
+                            placeholder="<Apellido>"
                             onChange={(e) => { setClientContactLastName((e.target as HTMLInputElement).value) }}
                         />
                     </label>
@@ -119,7 +125,7 @@ export default function ClientForm({ userId, setClientAdded }) {
                             value={clientContactPhone}
                             autoComplete="off"
                             className="w-full rounded-md py-1 px-5 text-darkbg"
-                            placeholder="40284946"
+                            placeholder="<12345678>"
                             type="number"
                             max={99999999}
                             min={10000000}
@@ -136,7 +142,7 @@ export default function ClientForm({ userId, setClientAdded }) {
                             value={clientContactEmail}
                             autoComplete="off"
                             className="w-full rounded-md py-1 px-5 text-darkbg"
-                            placeholder="jose.perez@correo.com"
+                            placeholder="<corre@dominio.com>"
                             type="email"
                             pattern="[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$"
                             onChange={(e) => { setClientContactEmail((e.target as HTMLInputElement).value) }}

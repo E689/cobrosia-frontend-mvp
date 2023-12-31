@@ -1,6 +1,6 @@
 'use client'
 
-import { getSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { useEffect, useState, useCallback } from "react";
 import ClientForm from "@/components/client/ClientForm";
 import ClientCard from "@/components/client/ClientCard";
@@ -8,12 +8,17 @@ import ClientCard from "@/components/client/ClientCard";
 export default function Clients() {
     // Vars
     const [clients, setClients] = useState(null)
-    const [clientAdded, setClientAdded] = useState(false)
+    const [clientModified, setClientModified] = useState(false)
     const [searchClient, setSearchClient] = useState("")
 
-    // Session
-    const session = getSession()
     const [userId, setUserId] = useState(null)
+
+    // Session
+    const { data: session } = useSession()
+
+    useEffect(() => {
+        if (session) setUserId(session.user.id)
+    }, [session])
 
     // Functions
     const loadClients = useCallback(() => {
@@ -28,15 +33,10 @@ export default function Clients() {
             })
     }, [userId])
 
-    // Procedures
-    session.then((res) => {
-        if (res) setUserId(res.user.id)
-    })
-
     useEffect(() => {
-        if (clientAdded) setClientAdded(false)
+        if (clientModified) setClientModified(false)
         if (userId) loadClients()
-    }, [userId, clientAdded, loadClients])
+    }, [userId, clientModified, loadClients])
 
     return (
         <div className="h-fit flex flex-col gap-4 py-20 px-20">
@@ -55,7 +55,7 @@ export default function Clients() {
 
             <ClientForm
                 userId={userId}
-                setClientAdded={setClientAdded}
+                setClientModified={clientModified}
             />
 
             <div className="flex flex-col w-full gap-2">
@@ -63,14 +63,17 @@ export default function Clients() {
                     clients ? (
                         clients.filter((client) => client.clientName.includes(searchClient)).map((client) => {
                             return (
-                                <ClientCard 
-                                    oClientName={client.clientName}
-                                    oContactName={client.contactName}
-                                    oContactLastName={client.contactlastName}
-                                    oContactPhone={client.phone}
-                                    oContactEmail={client.email}
+                                <ClientCard
+                                    originalData={{
+                                        "clientName": client.clientName,
+                                        "contactName": client.contactName,
+                                        "contactLastName": client.contactLastName,
+                                        "contactPhone": client.phone,
+                                        "contactEmail": client.email
+                                    }}
                                     clientId={client._id}
                                     key={client._id}
+                                    setClientModified={setClientModified}
                                 />
                             )
                         })

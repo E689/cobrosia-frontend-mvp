@@ -2,13 +2,14 @@
 
 import React, { useEffect, useState } from "react";
 import { IoIosAdd } from "react-icons/io";
+import { toast } from "react-toastify";
 
-export default function BillsForm({ clients, setBillAdded }) {
+export default function BillsForm({ clients, setBillModified }) {
     // Vars
     // Add Bill variables
     const [billAmount, setBillAmount] = useState("")
     const [billDueDate, setBillDueDate] = useState("")
-    const [billStatus, setBillStatus] = useState("")
+    const [billStatus, setBillStatus] = useState("pending")
     const [billClientID, setBillClientID] = useState("")
     const [billId, setBillId] = useState("")
 
@@ -25,7 +26,7 @@ export default function BillsForm({ clients, setBillAdded }) {
             "billId": billId,
             "context": {
                 "reminder": "5",
-                "editDueDate": false,
+                "editDueDate": "false",
                 "priority": "1",
                 "other": "Tratar al cliente con respeto."
             },
@@ -41,7 +42,12 @@ export default function BillsForm({ clients, setBillAdded }) {
                 body: JSON.stringify(data)
             }
         ).then((res) => {
-            if (res.ok) reloadBillsList()
+            if (res.ok) {
+                reloadBillsList()
+                toast.success("Se creo la factura correctamente!")
+            } else {
+                toast.error("Algo salio mal, no se pudo crear la factura.")
+            }
         })
     }
 
@@ -54,7 +60,7 @@ export default function BillsForm({ clients, setBillAdded }) {
         setBillId("")
 
         // Refresh bills list
-        setBillAdded(true)
+        setBillModified(true)
     }
 
     useEffect(() => {

@@ -2,18 +2,19 @@
 
 import React, { useEffect, useState } from "react";
 import { IoIosAdd } from "react-icons/io";
+import { toast } from "react-toastify";
 
-export default function BillsCard({ originalData, clients }) {
+export default function BillsCard({ originalData, clients, setBillModified, setExpanded }) {
     // Vars
     const [isHidden, setIsHidden] = useState(true)
     const [isEditable, setIsEditable] = useState(false)
     const [isLogUp, setIsLogUp] = useState(false)
 
     // Context vars
-    const [reminder, setReminder] = useState("")
-    const [editDueDate, setEditDueDate] = useState(false)
-    const [priority, setPriority] = useState("")
-    const [other, setOther] = useState("")
+    const [reminder, setReminder] = useState(originalData.billContext.reminder)
+    const [editDueDate, setEditDueDate] = useState(originalData.billContext.editDueDate)
+    const [priority, setPriority] = useState(originalData.billContext.priority)
+    const [other, setOther] = useState(originalData.billContext.other)
 
 
     // Add Bill variables
@@ -21,9 +22,62 @@ export default function BillsCard({ originalData, clients }) {
     const [billDueDate, setBillDueDate] = useState(originalData.billDueDate)
     const [billStatus, setBillStatus] = useState(originalData.billStatus)
     const [billClientID, setBillClientID] = useState(originalData.billClientID)
-    const [billClientName, setBillClientName] = useState(originalData.billClientName)
+    const [billClientName] = useState(originalData.billClientName)
     const [billId, setBillId] = useState(originalData.billId)
-    const [billContext, setBillContext] = useState(originalData.billContext)
+    const [billContext] = useState(originalData.billContext)
+
+    const deleteBill = (id: any) => {
+        fetch(
+            process.env.NEXT_PUBLIC_API_URL + `/bills/${id}`,
+            {
+                method: "DELETE",
+                cache: "no-cache",
+                headers: {
+                    "Content-Type": "application/json",
+                }
+            }
+        ).then((res) => {
+            if (res.ok) {
+                setBillModified(true)
+                toast.success("La factura se elimino de forma correcta!")
+            } else {
+                toast.error("La factura no pudo ser eliminada.")
+            }
+        })
+    }
+    const editBill = (id: any) => {
+        const data = {
+            "amount": billAmount,
+            "dueDate": billDueDate,
+            "status": billStatus,
+            "clientId": billClientID,
+            "billId": billId,
+            "context": billContext,
+        }
+        fetch(
+            process.env.NEXT_PUBLIC_API_URL + `/bills/${id}`,
+            {
+                method: "PUT",
+                cache: "no-cache",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data)
+            }
+        ).then((res) => {
+            if (res.ok) {
+                setBillModified(true)
+                toast.success("El cliente se modifico con éxito!")
+            } else {
+                toast.warn("Algo salio mal :(")
+            }
+        })
+    }
+
+    const showLog = () => {
+        setIsLogUp(true)
+        setExpanded(false)
+    }
 
     useEffect(() => {
         if (billContext) {
@@ -33,6 +87,7 @@ export default function BillsCard({ originalData, clients }) {
             setOther(billContext.other)
         }
     }, [billContext])
+
 
     return (
         <div className="overflow-hidden">
@@ -166,11 +221,11 @@ export default function BillsCard({ originalData, clients }) {
                                         <span>Permite mover fecha de pago:</span>
                                         <input
                                             name={`context-editDueDate_${billClientID}`}
-                                            checked={editDueDate}
+                                            checked={editDueDate === 'true' ? true : false}
                                             disabled={!isEditable}
                                             className="m-auto h-5 w-5"
                                             type="checkbox"
-                                            onChange={(e) => { setEditDueDate(!editDueDate) }}
+                                            onChange={(e) => { setEditDueDate(editDueDate === 'true' ? 'false' : 'true') }}
                                         />
                                     </label>
                                 </div>
@@ -195,7 +250,7 @@ export default function BillsCard({ originalData, clients }) {
                                 <div className="w-full sm:w-1/2 md:w-1/3 mb-4 px-2 grow">
                                     <label className="m-auto flex flex-col gap-1 text-black font-bold">
                                         <span>Otras instrucciones:</span>
-                                        <textarea 
+                                        <textarea
                                             name={`context-other_${billClientID}`}
                                             value={other}
                                             disabled={!isEditable}
@@ -214,7 +269,7 @@ export default function BillsCard({ originalData, clients }) {
                         <div className="w-full sm:w-1/2 md:w-1/3 mb-4 px-2 flex">
                             <button
                                 className="m-auto bg-red-600 hover:bg-red-500 text-lightbg font-bold p-2 rounded-md"
-                                onClick={() => setIsEditable(!isEditable)}
+                                onClick={() => deleteBill(originalData.id)}
                             >
                                 Eliminar
                             </button>
@@ -222,7 +277,12 @@ export default function BillsCard({ originalData, clients }) {
                         <div className="w-full sm:w-1/2 md:w-1/3 mb-4 px-2 flex">
                             <button
                                 className="m-auto bg-classy-blue hover:bg-classy-light-blue text-lightbg font-bold p-2 rounded-md"
-                                onClick={() => setIsEditable(!isEditable)}
+                                onClick={() => {
+                                    setIsEditable(!isEditable)
+                                    if (isEditable) {
+                                        editBill(originalData.id)
+                                    }
+                                }}
                             >
                                 {isEditable ? 'Guardar' : 'Editar'}
                             </button>
@@ -230,7 +290,7 @@ export default function BillsCard({ originalData, clients }) {
                         <div className="w-full sm:w-1/2 md:w-1/3 mb-4 px-2 flex">
                             <button
                                 className="m-auto bg-classy-blue hover:bg-classy-light-blue text-lightbg font-bold p-2 rounded-md"
-                                
+
                             >
                                 Cargar Archivo
                             </button>
@@ -238,7 +298,7 @@ export default function BillsCard({ originalData, clients }) {
                         <div className="w-full sm:w-1/2 md:w-1/3 mb-4 px-2 flex">
                             <button
                                 className="m-auto bg-classy-blue hover:bg-classy-light-blue text-lightbg font-bold p-2 rounded-md"
-                                onClick={() => setIsLogUp(!isLogUp)}
+                                onClick={() => showLog()}
                             >
                                 Ver Chat
                             </button>

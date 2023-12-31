@@ -1,19 +1,68 @@
 'use client'
 
 import React, { useState } from "react";
+import { toast } from "react-toastify";
 import { IoIosAdd } from "react-icons/io";
 
-export default function ClientCard({ oClientName, oContactName, oContactLastName, oContactPhone, oContactEmail, clientId }) {
+export default function ClientCard({ originalData, clientId, setClientModified }) {
     // Vars
     const [isHidden, setIsHidden] = useState(true)
     const [isEditable, setIsEditable] = useState(false)
 
     // modify Client variables
-    const [clientName, setClientName] = useState(oClientName)
-    const [clientContactName, setClientContactName] = useState(oContactName)
-    const [clientContactLastName, setClientContactLastName] = useState(oContactLastName)
-    const [clientContactPhone, setClientContactPhone] = useState(oContactPhone)
-    const [clientContactEmail, setClientContactEmail] = useState(oContactEmail)
+    const [clientName, setClientName] = useState(originalData.clientName)
+    const [clientContactName, setClientContactName] = useState(originalData.contactName)
+    const [clientContactLastName, setClientContactLastName] = useState(originalData.contactLastName)
+    const [clientContactPhone, setClientContactPhone] = useState(originalData.contactPhone)
+    const [clientContactEmail, setClientContactEmail] = useState(originalData.contactEmail)
+
+    const deleteClient = (id: any) => {
+        fetch(
+            process.env.NEXT_PUBLIC_API_URL + `/clients/${id}`,
+            {
+                method: "DELETE",
+                cache: "no-cache",
+                headers: {
+                    "Content-Type": "application/json",
+                }
+            }
+        ).then((res) => {
+            if (res.ok) {
+                setClientModified(true)
+                toast.success("El cliente se elimino con éxito!")
+            } else {
+                toast.error("El cliente tiene facturas asignadas, no se puede eliminar.")
+            }
+        })
+    }
+
+    const editClient = (id: any) => {
+        const data = {
+            "clientName": clientName,
+            "contactName": clientContactName,
+            "contactLastName": clientContactLastName,
+            "phone": clientContactPhone ? clientContactPhone : "00000000",
+            "email": clientContactEmail ? clientContactEmail : " - ",
+        }
+        fetch(
+            process.env.NEXT_PUBLIC_API_URL + `/clients/${id}`,
+            {
+                method: "PUT",
+                cache: "no-cache",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data)
+            }
+        ).then((res) => {
+            if (res.ok) {
+                setClientModified(true)
+                toast.success("El cliente se modifico con éxito!")
+            } else {
+                toast.warn("Algo salio mal :(")
+            }
+        })
+    }
 
     return (
         <div className="overflow-hidden">
@@ -100,13 +149,18 @@ export default function ClientCard({ oClientName, oContactName, oContactLastName
                     <div className="w-full sm:w-1/2 md:w-1/3 mb-4 px-2 flex">
                         <button 
                             className="m-auto bg-classy-blue hover:bg-classy-light-blue text-lightbg font-bold p-2 rounded-md"
-                            onClick={() => setIsEditable(!isEditable)}
+                            onClick={() => {
+                                setIsEditable(!isEditable)
+                                if (isEditable) {
+                                    editClient(clientId)
+                                }
+                            }}
                         >
                             { isEditable ? 'Guardar' : 'Editar' }
                         </button>
                         <button 
                             className="m-auto bg-classy-blue hover:bg-classy-light-blue text-lightbg font-bold p-2 rounded-md"
-                            onClick={() => setIsEditable(!isEditable)}
+                            onClick={() => deleteClient(clientId)}
                         >
                             Eliminar
                         </button>

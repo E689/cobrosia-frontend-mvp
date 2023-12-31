@@ -2,7 +2,7 @@
 
 import React, { useContext, createContext, useState, useEffect } from "react";
 import Image from "next/image";
-import { signOut, getSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { RiMenuUnfoldLine } from "react-icons/ri";
 import { RiMenuFoldLine } from "react-icons/ri";
 import { CiLogout } from "react-icons/ci";
@@ -10,17 +10,14 @@ import Link from "next/link";
 
 const SidebarContext = createContext(null)
 
-export default function SideBar({ children }) {
-
-    const [expanded, setExpanded] = useState(true)
-
-    const session = getSession();
+export default function SideBar({ children, expanded, setExpanded }) {
     const [user, setUser] = useState("")
 
+    // Session
+    const { data: session } = useSession()
+
     useEffect(() => {
-        session.then((res) => {
-            if (res) setUser(res.user.name)
-        })
+        if (session) setUser(session.user.name)
     }, [session])
 
     return (

@@ -2,20 +2,28 @@
 
 import BillsCard from "@/components/bills/BillsCard";
 import BillsForm from "@/components/bills/BillsForm";
-import { getSession } from "next-auth/react";
-import { useEffect, useState, useCallback } from "react";
+import { useSession } from "next-auth/react";
+import { useEffect, useState, useCallback, useContext } from "react";
+import { LayoutContext } from "../layout";
 
 export default function Messages() {
     // Vars
     const [clients, setClients] = useState(null)
 
+    let { setExpanded } = useContext(LayoutContext)
+
     const [bills, setBills] = useState(null)
-    const [billAdded, setBillAdded] = useState(false)
+    const [billModified, setBillModified] = useState(false)
     const [searchBill, setSearchBill] = useState("")
 
-    // Session
-    const session = getSession()
     const [userId, setUserId] = useState(null)
+
+    // Session
+    const { data: session } = useSession()
+
+    useEffect(() => {
+        if (session) setUserId(session.user.id)
+    }, [session])
 
     const loadBills = useCallback(() => {
         fetch(
@@ -41,15 +49,10 @@ export default function Messages() {
             })
     }, [userId])
 
-    // Procedures
-    session.then((res) => {
-        if (res) setUserId(res.user.id)
-    })
-
     useEffect(() => {
-        if (billAdded) setBillAdded(false)
+        if (billModified) setBillModified(false)
         if (userId) { loadBills(); loadClients() }
-    }, [userId, billAdded, loadBills, loadClients])
+    }, [userId, billModified, loadBills, loadClients])
 
     return (
         <div className="h-fit flex flex-col gap-4 py-20 px-20">
@@ -68,7 +71,7 @@ export default function Messages() {
 
             <BillsForm
                 clients={clients ? clients : ""}
-                setBillAdded={setBillAdded}
+                setBillModified={setBillModified}
             />
 
             <div className="flex flex-col w-full gap-2">
@@ -76,22 +79,20 @@ export default function Messages() {
                     bills ? (
                         bills.map((bill) => {
                             return (
-                                <BillsCard 
+                                <BillsCard
                                     originalData={{
-                                        "billAmount":bill.amount,
-                                        "billDueDate":bill.dueDate,
-                                        "billStatus":bill.status,
-                                        "billClientID":bill.client,
-                                        "billClientName":"Test Data",
-                                        "billId": "0001",
-                                        "billContext": {
-                                            "reminder": "5",
-                                            "editDueDate": false,
-                                            "priority": "1",
-                                            "other": "Tratar al cliente con respeto."
-                                        }
+                                        "billAmount": bill.amount,
+                                        "billDueDate": bill.dueDate,
+                                        "billStatus": bill.status,
+                                        "billClientID": bill.client._id,
+                                        "billClientName": bill.client.clientName,
+                                        "billId": bill.billId,
+                                        "billContext": bill.context,
+                                        "id": bill._id
                                     }}
+                                    setBillModified={setBillModified}
                                     clients={clients}
+                                    setExpanded={setExpanded}
                                     key={bill._id}
                                 />
                             )
