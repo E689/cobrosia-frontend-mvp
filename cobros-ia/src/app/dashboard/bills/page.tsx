@@ -5,12 +5,18 @@ import BillsForm from "@/components/bills/BillsForm";
 import { useSession } from "next-auth/react";
 import { useEffect, useState, useCallback, useContext } from "react";
 import { LayoutContext } from "../layout";
+import BillsLogView from "@/components/bills/BillsLogView";
 
 export default function Messages() {
     // Vars
     const [clients, setClients] = useState(null)
 
+    // Side bar expanded
     let { setExpanded } = useContext(LayoutContext)
+
+    // Chat log expanded variables
+    const [logExpanded, setLogExpanded] = useState(false)
+    const [logBill, setLogBill] = useState("")
 
     const [bills, setBills] = useState(null)
     const [billModified, setBillModified] = useState(false)
@@ -54,54 +60,67 @@ export default function Messages() {
         if (userId) { loadBills(); loadClients() }
     }, [userId, billModified, loadBills, loadClients])
 
+    useEffect(() => {
+        if (logBill) setLogExpanded(true)
+    }, [logBill])
+
     return (
-        <div className="h-fit flex flex-col gap-4 py-20 px-20">
-            <div className="flex flex-row w-full">
-                <div className="flex grow h-[10vh] p-4">
-                    <input
-                        id="searchBar"
-                        value={searchBill}
-                        autoComplete="on"
-                        className="w-full rounded-md py-1 px-5 text-darkbg font-bold"
-                        placeholder="Nombre de cliente"
-                        onChange={(e) => { setSearchBill((e.target as HTMLInputElement).value) }}
-                    />
+        <div className="flex overflow-y-hidden">
+            <div className="h-fit flex flex-col gap-4 py-20 px-20">
+                <div className="flex flex-row w-full">
+                    <div className="flex grow h-[10vh] p-4">
+                        <input
+                            id="searchBar"
+                            value={searchBill}
+                            autoComplete="on"
+                            className="w-full rounded-md py-1 px-5 text-darkbg font-bold"
+                            placeholder="Nombre de cliente"
+                            onChange={(e) => { setSearchBill((e.target as HTMLInputElement).value) }}
+                        />
+                    </div>
+                </div>
+
+                <BillsForm
+                    clients={clients ? clients : ""}
+                    setBillModified={setBillModified}
+                />
+
+                <div className="flex flex-col w-full gap-2">
+                    {
+                        bills ? (
+                            bills.map((bill) => {
+                                return (
+                                    <BillsCard
+                                        originalData={{
+                                            "billAmount": bill.amount,
+                                            "billDueDate": bill.dueDate,
+                                            "billStatus": bill.status,
+                                            "billClientID": bill.client._id,
+                                            "billClientName": bill.client.clientName,
+                                            "billId": bill.billId,
+                                            "billContext": bill.context,
+                                            "id": bill._id
+                                        }}
+                                        setBillModified={setBillModified}
+                                        clients={clients}
+                                        setExpanded={setExpanded}
+                                        setLogBill={setLogBill}
+                                        key={bill._id}
+                                    />
+                                )
+                            })
+                        ) : (
+                            <span>No hay clientes</span>
+                        )
+                    }
                 </div>
             </div>
-
-            <BillsForm
-                clients={clients ? clients : ""}
-                setBillModified={setBillModified}
+            <BillsLogView 
+                billId={logBill}
+                expanded={logExpanded}
+                setExpanded={setLogExpanded}
+                setSideBarExpanded={setExpanded}
             />
-
-            <div className="flex flex-col w-full gap-2">
-                {
-                    bills ? (
-                        bills.map((bill) => {
-                            return (
-                                <BillsCard
-                                    originalData={{
-                                        "billAmount": bill.amount,
-                                        "billDueDate": bill.dueDate,
-                                        "billStatus": bill.status,
-                                        "billClientID": bill.client._id,
-                                        "billClientName": bill.client.clientName,
-                                        "billId": bill.billId,
-                                        "billContext": bill.context,
-                                        "id": bill._id
-                                    }}
-                                    setBillModified={setBillModified}
-                                    clients={clients}
-                                    setExpanded={setExpanded}
-                                    key={bill._id}
-                                />
-                            )
-                        })
-                    ) : (
-                        <span>No hay clientes</span>
-                    )
-                }
-            </div>
         </div>
     )
 }

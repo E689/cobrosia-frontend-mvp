@@ -108,7 +108,7 @@ export default function BillsForm({ clients, setBillModified }) {
                         >
                             {
                                 clients ? (
-                                    clients.map((cliente) => {
+                                    clients.map((cliente, index) => {
                                         return (
                                             <option value={cliente._id} key={cliente._id}>{cliente.clientName}</option>
                                         )

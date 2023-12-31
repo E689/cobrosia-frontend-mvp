@@ -55,7 +55,7 @@ export default function Clients() {
 
             <ClientForm
                 userId={userId}
-                setClientModified={clientModified}
+                setClientModified={setClientModified}
             />
 
             <div className="flex flex-col w-full gap-2">

@@ -4,11 +4,10 @@ import React, { useEffect, useState } from "react";
 import { IoIosAdd } from "react-icons/io";
 import { toast } from "react-toastify";
 
-export default function BillsCard({ originalData, clients, setBillModified, setExpanded }) {
+export default function BillsCard({ originalData, clients, setBillModified, setExpanded, setLogBill }) {
     // Vars
     const [isHidden, setIsHidden] = useState(true)
     const [isEditable, setIsEditable] = useState(false)
-    const [isLogUp, setIsLogUp] = useState(false)
 
     // Context vars
     const [reminder, setReminder] = useState(originalData.billContext.reminder)
@@ -72,11 +71,6 @@ export default function BillsCard({ originalData, clients, setBillModified, setE
                 toast.warn("Algo salio mal :(")
             }
         })
-    }
-
-    const showLog = () => {
-        setIsLogUp(true)
-        setExpanded(false)
     }
 
     useEffect(() => {
@@ -298,7 +292,7 @@ export default function BillsCard({ originalData, clients, setBillModified, setE
                         <div className="w-full sm:w-1/2 md:w-1/3 mb-4 px-2 flex">
                             <button
                                 className="m-auto bg-classy-blue hover:bg-classy-light-blue text-lightbg font-bold p-2 rounded-md"
-                                onClick={() => showLog()}
+                                onClick={() => setLogBill(originalData.id)}
                             >
                                 Ver Chat
                             </button>
