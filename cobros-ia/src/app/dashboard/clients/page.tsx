@@ -38,54 +38,62 @@ export default function Clients() {
         if (userId) loadClients()
     }, [userId, clientModified, loadClients])
 
-    return (
-        <div className="h-fit flex flex-col gap-4 py-20 px-20">
-            <div className="flex flex-row w-full">
-                <div className="flex grow h-[10vh] p-4">
-                    <input
-                        id="searchBar"
-                        value={searchClient}
-                        autoComplete="on"
-                        className="w-full rounded-md py-1 px-5 text-darkbg font-bold"
-                        placeholder="Nombre de cliente"
-                        onChange={(e) => { setSearchClient((e.target as HTMLInputElement).value) }}
-                    />
+    if (session) {
+        return (
+            <div className="h-fit flex flex-col gap-4 py-20 px-20">
+                <div className="flex flex-row w-full">
+                    <div className="flex grow h-[10vh] p-4">
+                        <input
+                            id="searchBar"
+                            value={searchClient}
+                            autoComplete="on"
+                            className="w-full rounded-md py-1 px-5 text-darkbg font-bold"
+                            placeholder="Nombre de cliente"
+                            onChange={(e) => { setSearchClient((e.target as HTMLInputElement).value) }}
+                        />
+                    </div>
+                </div>
+
+                <ClientForm
+                    userId={userId}
+                    setClientModified={setClientModified}
+                />
+
+                <div className="flex flex-col w-full gap-2">
+                    {
+                        clients ? (
+                            clients.filter((client) => client.clientName.includes(searchClient)).map((client) => {
+                                return (
+                                    <ClientCard
+                                        originalData={{
+                                            "clientName": client.clientName,
+                                            "contactName": client.contactName,
+                                            "contactLastName": client.contactLastName,
+                                            "contactPhone": client.phone,
+                                            "contactEmail": client.email
+                                        }}
+                                        clientId={client._id}
+                                        key={client._id}
+                                        setClientModified={setClientModified}
+                                    />
+                                )
+                            })
+                        ) : (
+                            <div className="bg-classy-blue rounded-md grow p-4 flex flex-col gap-2">
+                                <div className="flex m-auto text-lightbg font-bold">
+                                    <h1>No hay clientes para mostrar...</h1>
+                                </div>
+                            </div>
+                        )
+                    }
                 </div>
             </div>
-
-            <ClientForm
-                userId={userId}
-                setClientModified={setClientModified}
-            />
-
-            <div className="flex flex-col w-full gap-2">
-                {
-                    clients ? (
-                        clients.filter((client) => client.clientName.includes(searchClient)).map((client) => {
-                            return (
-                                <ClientCard
-                                    originalData={{
-                                        "clientName": client.clientName,
-                                        "contactName": client.contactName,
-                                        "contactLastName": client.contactLastName,
-                                        "contactPhone": client.phone,
-                                        "contactEmail": client.email
-                                    }}
-                                    clientId={client._id}
-                                    key={client._id}
-                                    setClientModified={setClientModified}
-                                />
-                            )
-                        })
-                    ) : (
-                        <div className="bg-classy-blue rounded-md grow p-4 flex flex-col gap-2">
-                            <div className="flex m-auto text-lightbg font-bold">
-                                <h1>No hay clientes para mostrar...</h1>
-                            </div>
-                        </div>
-                    )
-                }
+        )
+    } else {
+        return (
+            <div className="w-100 h-screen flex">
+                <span className="text-black font-bold m-auto">Cargando...</span>
             </div>
-        </div>
-    )
+        )
+    }
 }

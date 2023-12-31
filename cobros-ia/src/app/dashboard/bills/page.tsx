@@ -3,16 +3,12 @@
 import BillsCard from "@/components/bills/BillsCard";
 import BillsForm from "@/components/bills/BillsForm";
 import { useSession } from "next-auth/react";
-import { useEffect, useState, useCallback, useContext } from "react";
-import { LayoutContext } from "../layout";
+import { useEffect, useState, useCallback } from "react";
 import BillsLogView from "@/components/bills/BillsLogView";
 
 export default function Messages() {
     // Vars
     const [clients, setClients] = useState(null)
-
-    // Side bar expanded
-    let { setExpanded } = useContext(LayoutContext)
 
     // Chat log expanded variables
     const [logExpanded, setLogExpanded] = useState(false)
@@ -64,7 +60,8 @@ export default function Messages() {
         if (logBill) setLogExpanded(true)
     }, [logBill])
 
-    return (
+    if (session) {
+        return (
         <div className="flex overflow-y-hidden">
             <div className="h-fit flex flex-col gap-4 py-20 px-20">
                 <div className="flex flex-row w-full">
@@ -103,8 +100,8 @@ export default function Messages() {
                                         }}
                                         setBillModified={setBillModified}
                                         clients={clients}
-                                        setExpanded={setExpanded}
                                         setLogBill={setLogBill}
+                                        setLogExpanded={setLogExpanded}
                                         key={bill._id}
                                     />
                                 )
@@ -119,8 +116,14 @@ export default function Messages() {
                 billId={logBill}
                 expanded={logExpanded}
                 setExpanded={setLogExpanded}
-                setSideBarExpanded={setExpanded}
             />
         </div>
     )
+    } else {
+        return (
+            <div className="w-100 h-screen flex">
+                <span className="text-black font-bold m-auto">Cargando...</span>
+            </div>
+        )
+    }
 }

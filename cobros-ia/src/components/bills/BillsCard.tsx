@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { IoIosAdd } from "react-icons/io";
 import { toast } from "react-toastify";
 
-export default function BillsCard({ originalData, clients, setBillModified, setExpanded, setLogBill }) {
+export default function BillsCard({ originalData, clients, setBillModified, setLogBill, setLogExpanded }) {
     // Vars
     const [isHidden, setIsHidden] = useState(true)
     const [isEditable, setIsEditable] = useState(false)
@@ -292,7 +292,7 @@ export default function BillsCard({ originalData, clients, setBillModified, setE
                         <div className="w-full sm:w-1/2 md:w-1/3 mb-4 px-2 flex">
                             <button
                                 className="m-auto bg-classy-blue hover:bg-classy-light-blue text-lightbg font-bold p-2 rounded-md"
-                                onClick={() => setLogBill(originalData.id)}
+                                onClick={() => {setLogBill(originalData.id); setLogExpanded(true)}}
                             >
                                 Ver Chat
                             </button>

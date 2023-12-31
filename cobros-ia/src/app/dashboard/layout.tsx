@@ -2,10 +2,8 @@
 
 import SideBar, { SidebarItem } from "@/components/SideBar"
 import { usePathname } from "next/navigation";
-import { createContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { CiHome, CiShop, CiMail } from "react-icons/ci";
-
-export const LayoutContext = createContext(null)
 
 export default function DashboardLayout({ children }) {
     // Vars
@@ -44,9 +42,7 @@ export default function DashboardLayout({ children }) {
                     />
                 </SideBar>
                 <div className="h-screen overflow-x-auto">
-                    <LayoutContext.Provider value={{ setExpanded }}>
-                        {children}
-                    </LayoutContext.Provider>
+                    {children}
                 </div>
             </div>
         </>
